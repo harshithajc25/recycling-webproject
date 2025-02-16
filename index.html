@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Guide - Smart Waste Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class='bx bx-leaf'></i>
+                <span>Eco Guide</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#track">Track Waste</a></li>
+                <li><a href="#centers">Recycling Centers</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><button id="loginBtn" class="login-button">Login</button></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class='bx bx-menu'></i>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1 class="animate-text">Make Recycling Simple & Rewarding</h1>
+            <p class="animate-text-delay">Join our community of eco-conscious individuals making a difference in urban waste management</p>
+            <div class="hero-stats">
+                <div class="stat animate-up">
+                    <h3 class="counter" data-target="20">0</h3>
+                    <p>Waste Reduction %</p>
+                </div>
+                <div class="stat animate-up" style="animation-delay: 0.2s">
+                    <h3 class="counter" data-target="5000">0</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat animate-up" style="animation-delay: 0.4s">
+                    <h3 class="counter" data-target="100">0</h3>
+                    <p>Recycling Centers</p>
+                </div>
+            </div>
+            <button class="cta-button pulse">Start Tracking Today</button>
+        </div>
+        <div class="wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section id="track" class="waste-tracking">
+        <div class="container">
+            <h2>Track Your Waste</h2>
+            <div class="waste-stats">
+                <canvas id="wasteChart"></canvas>
+            </div>
+            <div class="tracking-grid">
+                <div class="waste-card" data-type="recyclable">
+                    <i class='bx bx-recycle'></i>
+                    <h3>Recyclables</h3>
+                    <p>Track paper, plastic, glass, and metal</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%"></div>
+                    </div>
+                    <button class="track-button">Log Waste</button>
+                </div>
+                <div class="waste-card" data-type="organic">
+                    <i class='bx bx-leaf'></i>
+                    <h3>Organic Waste</h3>
+                    <p>Track food scraps and yard waste</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 45%"></div>
+                    </div>
+                    <button class="track-button">Log Waste</button>
+                </div>
+                <div class="waste-card" data-type="non-recyclable">
+                    <i class='bx bx-trash'></i>
+                    <h3>Non-Recyclables</h3>
+                    <p>Track other household waste</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 30%"></div>
+                    </div>
+                    <button class="track-button">Log Waste</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="centers" class="recycling-centers">
+        <div class="container">
+            <h2>Find Recycling Centers</h2>
+            <div class="search-container">
+                <input type="text" id="centerSearch" placeholder="Search by location or material...">
+                <button id="searchBtn"><i class='bx bx-search'></i></button>
+            </div>
+            <div class="map-container">
+                <div id="map">
+                    <!-- Map will be loaded here -->
+                </div>
+                <div class="center-list" id="centersList">
+                    <!-- Centers will be loaded dynamically -->
+                </div>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-type="all">All</button>
+                <button class="filter-btn" data-type="paper">Paper</button>
+                <button class="filter-btn" data-type="plastic">Plastic</button>
+                <button class="filter-btn" data-type="glass">Glass</button>
+                <button class="filter-btn" data-type="metal">Metal</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="community" class="community">
+        <div class="container">
+            <h2>Community Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <canvas id="communityProgress"></canvas>
+                    <h3>Community Goal</h3>
+                    <p>75% towards monthly recycling target</p>
+                </div>
+                <div class="leaderboard">
+                    <h3>Top Recyclers</h3>
+                    <div class="leaderboard-tabs">
+                        <button class="tab-btn active" data-period="weekly">Weekly</button>
+                        <button class="tab-btn" data-period="monthly">Monthly</button>
+                        <button class="tab-btn" data-period="allTime">All Time</button>
+                    </div>
+                    <ul id="leaderboardList">
+                        <!-- Leaderboard will be loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+            <div class="achievements">
+                <h3>Recent Achievements</h3>
+                <div class="achievement-list" id="achievementsList">
+                    <!-- Achievements will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tips" class="eco-tips">
+        <div class="container">
+            <h2>Daily Eco Tips</h2>
+            <div class="tip-carousel">
+                <div class="tip-card active">
+                    <i class='bx bx-bulb'></i>
+                    <h3>Reduce Plastic</h3>
+                    <p>Use reusable bags and containers to minimize plastic waste.</p>
+                </div>
+                <!-- More tips will be loaded dynamically -->
+            </div>
+            <div class="carousel-controls">
+                <button class="prev-tip"><i class='bx bx-chevron-left'></i></button>
+                <button class="next-tip"><i class='bx bx-chevron-right'></i></button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Eco Guide</h3>
+                    <p>Making urban waste management smarter and more sustainable.</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Enter your email">
+                        <button>Subscribe</button>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#track">Track Waste</a></li>
+                        <li><a href="#centers">Find Centers</a></li>
+                        <li><a href="#community">Community</a></li>
+                        <li><a href="#tips">Eco Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-hover"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="social-hover"><i class='bx bxl-twitter'></i></a>
+                        <a href="#" class="social-hover"><i class='bx bxl-instagram'></i></a>
+                    </div>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2025 Eco Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="wasteModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Log Your Waste</h2>
+            <form id="wasteForm">
+                <div class="form-group">
+                    <label for="wasteType">Type of Waste</label>
+                    <select id="wasteType" required>
+                        <option value="">Select type</option>
+                        <option value="paper">Paper</option>
+                        <option value="plastic">Plastic</option>
+                        <option value="glass">Glass</option>
+                        <option value="metal">Metal</option>
+                        <option value="organic">Organic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity (kg)</label>
+                    <input type="number" id="quantity" min="0" step="0.1" required>
+                    <div class="quantity-slider">
+                        <input type="range" min="0" max="10" step="0.1" value="0">
+                    </div>
+                </div>
+                <div class="impact-preview">
+                    <h4>Environmental Impact</h4>
+                    <div class="impact-stats">
+                        <div class="impact-stat">
+                            <i class='bx bx-tree'></i>
+                            <span>0 trees saved</span>
+                        </div>
+                        <div class="impact-stat">
+                            <i class='bx bx-water'></i>
+                            <span>0 L water saved</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="submit-button">Log Waste</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="achievementModal" class="modal">
+        <div class="modal-content achievement-unlock">
+            <i class='bx bx-medal'></i>
+            <h2>Achievement Unlocked!</h2>
+            <p class="achievement-description"></p>
+            <button class="close-achievement">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
+        <i class='bx bx-check-circle'></i>
+        <p></p>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>
